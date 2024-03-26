@@ -10,9 +10,9 @@ import '@/style/index.less'
   <!-- keep-alive 是Vue提供的一个抽象组件，主要用于保留组件状态或避免重新渲染。 -->
   <router-view v-slot="{ Component }" class="warp slide animate03">
     <keep-alive>
-      <component v-if="$route.meta.keepAlive" :is="Component" />
+      <component :is="Component" />
     </keep-alive>
-    <component v-if="!$route.meta.keepAlive" :is="Component" />
+    <!-- <component v-if="!$route.meta.keepAlive" :is="Component" /> -->
   </router-view>
 
   <Footer v-if="!$route.meta.notPortal" />

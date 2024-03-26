@@ -38,6 +38,10 @@ const routes = [
   },
   {
     path: "/links",
+    meta: {
+      title: '友链',
+      keepAlive: true,
+    },
     component: () => import("@/pages/Blog/links.vue"),
   },
   {
