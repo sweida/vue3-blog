@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="about-me">
     <div class="about-bg">
       <!-- <img v-imgSrc="banners[0].url"> -->
       <img src="@/assets/banner2.jpg">
@@ -65,20 +65,18 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { getSkills } from '@/api/blog'
+import { Skills } from '@/api/blog'
 
 const skillsImg = ref([])
 
-// const state = reactive({ skillsImg: [] })
-
-const getSkillList = () => {
-  getSkills({ type: '技能' }).then(res => {
+const getSkills = () => {
+  Skills({ type: '技能' }).then(res => {
     skillsImg.value = res.data
   })
 }
 
 onMounted(() => {
-  getSkillList()
+  getSkills()
 })
 
 </script>

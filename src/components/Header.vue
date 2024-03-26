@@ -10,8 +10,10 @@
           </div>
           <!-- 菜单 -->
           <!-- <li v-for="(item, index) in nav" :key="index" :class="{active: $route.path==item.url}"> -->
-          <li v-for="(item, index) in nav" :key="index">
-            <a @click="goRouter(item.url)">{{ item.name }}</a>
+          <li v-for="(item, index) in nav" :key="index" @click="goRouter(item.url)"
+            :class="{ active: $route.path == item.url }">
+            <!-- <a @click="goRouter(item.url)"></a> -->
+            {{ item.name }}
           </li>
           <!-- <li>
             <a href="http://blog-doc.golang365.top" target="_blank">API文档</a>
@@ -115,33 +117,32 @@
 
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getWebInfo } from '@/api/blog'
+import { WebInfo } from '@/api/blog'
 
 const router = useRouter()
 
 const nav = [
-  { name: '文章', url: '/blog', icon: 'ios-book' },
+  { name: '文章', url: '/articles', icon: 'ios-book' },
   { name: '友链', url: '/links', icon: 'logo-octocat' },
   { name: '留言', url: '/message', icon: 'md-chatboxes' },
   { name: '关于我', url: '/about', icon: 'md-beer' },
 ]
 
-const goRouter = (item) => {
-  router.push(item)
+const goRouter = (url) => {
+  router.push(url)
 }
 
-const getWebInfoData = () => {
-  getWebInfo().then(res => {
+const getWebInfo = () => {
+  WebInfo().then(res => {
     console.log('webinfo', res);
   })
 }
 
 onMounted(() => {
-  getWebInfoData()
+  getWebInfo()
 })
-
 
 </script>
 
@@ -239,7 +240,7 @@ onMounted(() => {
   }
 
   .left li {
-    padding: 1px 15px;
+    padding: 3px 15px;
     margin: 0 2px;
     cursor: pointer;
   }

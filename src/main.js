@@ -12,10 +12,12 @@ import { Button, message, Row, Col } from 'ant-design-vue';
 
 // 全局组件
 import SpinLoading from './components/SpinLoading.vue'
+import TextLoading from './components/TextLoading.vue'
 
 const app = createApp(App)
 registerDirectives(app)
 app.component('SpinLoading', SpinLoading)
+app.component('TextLoading', TextLoading)
 app.use(router)
 app.use(Button).use(Row).use(Col)
 // app.provide('$axios', axios)

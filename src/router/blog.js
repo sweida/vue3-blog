@@ -19,9 +19,18 @@ const routes = [
     // }
   },
   {
-    path: "/goods",
+    path: "/articles",
+    meta: {
+      title: '文章列表',
+      keepAlive: true,
+    },
     //路由懒加载
-    component: () => import("@/pages/Goods/index.vue"),
+    component: () => import("@/pages/Blog/articles.vue"),
+  },
+  {
+    path: "/articles/:id",
+    //路由懒加载
+    component: () => import("@/pages/Blog/articles-detail.vue"),
   },
   {
     path: "/about",

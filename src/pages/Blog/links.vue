@@ -48,25 +48,25 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getLinks } from '@/api/blog'
+import { Links } from '@/api/blog'
 
 const links = ref([])
 const isLoading = ref(true)
 
-const getLinkList = () => {
+const getLinks = () => {
   let params = {
     page: 1,
     all: 1,
     sumCount: 100,
   }
-  getLinks(params).then(res => {
+  Links(params).then(res => {
     links.value = res.data
     isLoading.value = false
   })
 }
 
 onMounted(() => {
-  getLinkList()
+  getLinks()
 })
 
 </script>
@@ -116,9 +116,10 @@ h3 {
 
 .link-ul {
   display: grid;
-  padding: 0;
+  padding: 30px 0;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   grid-gap: 30px 20px;
+
 
   .link-li {
     position: relative;

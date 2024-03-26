@@ -15,9 +15,8 @@
             {{ item.name }}
           </span>
           <div>
-            <span class="tagli animate03"
-              :class="{ hot: child == 'laravel' || child == 'vue' || child == 'go' || child == 'react' || child == 'svelte' || child == 'docker' }"
-              v-for="(child, index) in item.tags" :key="index" @click="OrderByTag(child)">
+            <span class="tagli animate03" :class="{ hot: hotSkill.includes(child) }" v-for="(child, index) in item.tags"
+              :key="index" @click="OrderByTag(child)">
               {{ child }}
             </span>
           </div>
@@ -28,7 +27,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, reactive, onMounted } from 'vue'
+import { Classify } from '@/api/blog'
+
+const hotSkill = ['laravel', 'vue', 'go', 'react', 'svelte', 'docker', 'python']
+const classifys = ref({})
+
+// skill列表
+const getClassify = () => {
+  Classify().then(res => {
+    classifys.value = res.data
+  })
+}
+
+
+onMounted(() => {
+  getClassify()
+})
 // import {mapGetters} from "vuex"
 
 // export default {
