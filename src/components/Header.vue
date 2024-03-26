@@ -62,7 +62,7 @@
         <span></span>
         <span></span>
         <div class="mobliNav-main" slot="content">
-          <!-- <img v-imgUrl="banners[4].url" class="nav-bg" /> -->
+          <!-- <img v-imgSrc="banners[4].url" class="nav-bg" /> -->
           <li v-for="(item, index) in nav" :key="index">
             <!-- :class="{ active: $route.path == item.url }" -->
             <Icon :type="item.icon" />

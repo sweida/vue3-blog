@@ -17,7 +17,7 @@ import Skills from '@/components/Skills'
         </div>
 
         <div class="list-img">
-          <img v-imgUrl="item.img" class="footer-bg animate03" />
+          <img v-imgSrc="item.img" class="footer-bg animate03" />
         </div>
 
         <div class="list-main">

@@ -1,7 +1,7 @@
 <template>
   <div class="higtlight">
     <section class="about-bg">
-      <!-- <img v-imgUrl="banners[3].url" class="bg-img" /> -->
+      <!-- <img v-imgSrc="banners[3].url" class="bg-img" /> -->
       <img src="@/assets/banner5.jpg" class="bg-img">
 
       <div class="bg"></div>

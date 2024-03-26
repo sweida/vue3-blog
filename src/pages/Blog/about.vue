@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="about-bg">
-      <!-- <img v-imgUrl="banners[0].url"> -->
+      <!-- <img v-imgSrc="banners[0].url"> -->
       <img src="@/assets/banner2.jpg">
 
       <div class="bg bg2"></div>
@@ -39,7 +39,7 @@
     </div>
 
     <div class="about-bg">
-      <!-- <img v-imgUrl="banners[1].url"> -->
+      <!-- <img v-imgSrc="banners[1].url"> -->
       <img src="@/assets/banner3.jpg">
 
       <div class="bg"></div>

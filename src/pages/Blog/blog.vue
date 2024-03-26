@@ -7,17 +7,13 @@
     <TextLoading v-if="loading"></TextLoading>
     <div class="article slide" v-else>
       <!-- :to="{ path: `/blog/${item.id}` }" -->
-      <router-link
-        class="list animate03"
-        v-for="(item, index) in articles"
-        :key="index"
-      >
+      <router-link class="list animate03" v-for="(item, index) in articles" :key="index">
         <div class="classifybox">
           <div class="classify">{{ item.classify }}</div>
         </div>
 
         <div class="list-img">
-          <img v-imgUrl="item.img" class="footer-bg animate03" />
+          <img v-imgSrc="item.img" class="footer-bg animate03" />
         </div>
 
         <div class="list-main">
@@ -29,33 +25,19 @@
           <!-- 有标签才显示 -->
           <div class="tag-box" v-if="item.tags && item.tags.length">
             <i class="iconfont lv-icon-biaoqian6"></i>
-            <span
-              v-for="(tagli, index) in item.tags"
-              :key="index"
-              :class="{ active: tag == tagli }"
-            >
+            <span v-for="(tagli, index) in item.tags" :key="index" :class="{ active: tag == tagli }">
               {{ tagli }}
             </span>
           </div>
 
           <div class="comment">
-            <span
-              ><i class="iconfont lv-icon-huore"></i
-              >{{ item.view_count }}热度</span
-            >
-            <span
-              ><i class="iconfont lv-icon-xiaoxi3"></i
-              >{{ item.commentCount }}条评论</span
-            >
+            <span><i class="iconfont lv-icon-huore"></i>{{ item.view_count }}热度</span>
+            <span><i class="iconfont lv-icon-xiaoxi3"></i>{{ item.commentCount }}条评论</span>
           </div>
         </div>
       </router-link>
 
-      <NewPage
-        :pageModel="pageModel"
-        @selectList="selectRoleList"
-        v-if="pageModel.sumCount > 10"
-      ></NewPage>
+      <NewPage :pageModel="pageModel" @selectList="selectRoleList" v-if="pageModel.sumCount > 10"></NewPage>
     </div>
     <!-- <Skills
       :pageModel="pageModel"
@@ -75,7 +57,7 @@ export default {
   components: {
     Skills,
   },
-  data() {
+  data () {
     return {
       show: true,
       loading: false,
@@ -92,9 +74,9 @@ export default {
     ...mapGetters(['classify', 'tag']),
   },
   watch: {
-    $router() {},
+    $router () { },
   },
-  created() {
+  created () {
     if (this.$route.query.tag) {
       this.ArticlesOrderByTag()
     } else if (this.$route.query.classify) {
@@ -106,7 +88,7 @@ export default {
   },
   methods: {
     ...mapActions(['Tag', 'Classify']),
-    getArticles() {
+    getArticles () {
       this.loading = true
       this.$api.ArticleList(this.pageModel).then((res) => {
         // console.log(res, 'res')
@@ -116,7 +98,7 @@ export default {
         this.loading = false
       })
     },
-    selectRoleList() {
+    selectRoleList () {
       if (this.$route.query.classify) {
         this.ArticlesOrderByClassify()
         this.$router.push({
@@ -147,7 +129,7 @@ export default {
       window.scrollTo(0, 0)
     },
     // 按标签获取
-    ArticlesOrderByTag() {
+    ArticlesOrderByTag () {
       this.loading = true
       let param = {
         tag: this.$route.query.tag,
@@ -164,7 +146,7 @@ export default {
       })
     },
     // 按分类获取
-    ArticlesOrderByClassify() {
+    ArticlesOrderByClassify () {
       this.loading = true
       let param = {
         classify: this.$route.query.classify,

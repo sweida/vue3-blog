@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="banner">
-      <!-- <img v-imgUrl="banners[2].url" alt="" /> -->
+      <!-- <img v-imgSrc="banners[2].url" alt="" /> -->
       <img src="@/assets/banner4.jpg">
 
       <div class="bg"></div>
@@ -25,30 +25,33 @@
     <!-- 友情连接 -->
     <div class="main">
       <h3># 小伙伴们 #</h3>
-      <!-- <MyLoading v-if="loading"></MyLoading> -->
-      <Row :gutter="20">
-        <Col :xs="24" :sm="12" :md="8" v-for="(item, index) in links" :key="index" class="animate03">
-        <a :href="item.url" target="_blank" class="link-box animate03">
-          <div class="imgbox">
-            <img v-imgUrl="item.img" />
-          </div>
-          <div class="desc">
-            <h4>{{ item.title }}</h4>
-            <p>{{ item.desc }}</p>
-          </div>
-        </a>
-        </Col>
-      </Row>
+      <SpinLoading :isLoading="isLoading">
+        <ul class="link-ul">
+          <li v-for="(item, index) in links" :key="index" class="animate03 link-li">
+            <a :href="item.url" target="_blank" class="link-box animate03">
+              <div class="imgbox">
+                <img v-imgSrc="item.img" />
+              </div>
+              <div class="desc">
+                <h4>{{ item.title }}</h4>
+                <p>{{ item.desc }}</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </SpinLoading>
+
     </div>
   </div>
 </template>
 
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { getLinks } from '@/api/blog'
 
 const links = ref([])
+const isLoading = ref(true)
 
 const getLinkList = () => {
   let params = {
@@ -58,7 +61,7 @@ const getLinkList = () => {
   }
   getLinks(params).then(res => {
     links.value = res.data
-    console.log(links, 'links');
+    isLoading.value = false
   })
 }
 
@@ -68,40 +71,6 @@ onMounted(() => {
 
 </script>
 
-<!-- <script>
-// import { mapActions, mapGetters } from 'vuex'
-export default {
-  data () {
-    return {
-      loading: true,
-      links: [],
-      pageModel: {
-        page: 1,
-        all: 1,
-        sumCount: 100,
-      },
-    }
-  },
-  // computed: {
-  //   ...mapGetters(['banners']),
-  // },
-  created () {
-    // this.getLink()
-  },
-  methods: {
-    // 获取留言 all=1请求所有，不加的话请求的是有效期内的
-    getLink () {
-      this.$api
-        .LinkList(this.pageModel)
-        .then((res) => {
-          this.links = res.data
-          this.loading = false
-        })
-        .catch(() => { })
-    },
-  },
-}
-</script> -->
 
 <style scoped lang="less">
 .main {
@@ -142,6 +111,48 @@ h3 {
   .ivu-col {
     position: relative;
     margin-bottom: 35px;
+  }
+}
+
+.link-ul {
+  display: grid;
+  padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-gap: 30px 20px;
+
+  .link-li {
+    position: relative;
+
+    &::before {
+      content: '';
+      border: 0.5px solid #dedede;
+      background: #fff;
+      display: block;
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: -4px;
+      height: 5px;
+      z-index: 9;
+    }
+
+    &::after {
+      content: '';
+      border: 0.5px solid #dedede;
+      background: #fff;
+      display: block;
+      position: absolute;
+      right: 18px;
+      left: 18px;
+      bottom: -8px;
+      height: 5px;
+      box-shadow: 2px 2px 10px #e4e4e4;
+    }
+
+    &:hover .link-box {
+      transform: translateY(15px);
+      background: #ecf0f1;
+    }
   }
 }
 
@@ -186,40 +197,6 @@ h3 {
   }
 }
 
-.ivu-col:before {
-  content: '';
-  border: 0.5px solid #dedede;
-  background: #fff;
-  display: block;
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: -4px;
-  height: 5px;
-  z-index: 9;
-}
-
-.ivu-col:after {
-  content: '';
-  border: 0.5px solid #dedede;
-  background: #fff;
-  display: block;
-  position: absolute;
-  right: 18px;
-  left: 18px;
-  bottom: -8px;
-  height: 5px;
-  box-shadow: 2px 2px 10px #e4e4e4;
-}
-
-.ivu-col:hover .link-box {
-  transform: translateY(15px);
-  background: #ecf0f1;
-}
-
-.animate03 {
-  transition: transform 0.26s;
-}
 
 @media screen and (max-width: 750px) {
   .banner {
