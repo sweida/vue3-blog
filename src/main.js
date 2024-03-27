@@ -7,7 +7,7 @@ import router from './router'
 // 自定义指令
 import registerDirectives from './directive/index'
 
-import { Button, message, Row, Col } from 'ant-design-vue';
+import { Button, message, Row, Col, Input } from 'ant-design-vue';
 // createApp(App).use(router).mount('#app')
 
 // 全局组件
@@ -19,7 +19,7 @@ registerDirectives(app)
 app.component('SpinLoading', SpinLoading)
 app.component('TextLoading', TextLoading)
 app.use(router)
-app.use(Button).use(Row).use(Col)
+app.use(Button).use(Row).use(Col).use(Input)
 // app.provide('$axios', axios)
 app.mount('#app')
 

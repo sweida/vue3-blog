@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { MessageList } from '@/api/message'
+import { MessageList, MessageAdd } from '@/api/message'
 import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked';
 import '@/style/message.less'
@@ -22,10 +22,11 @@ const router = useRouter()
 const isLoading = ref(true)
 
 const state = reactive()
+const message = ref()
 const messageList = reactive([])
 const avatarUrl = ref(import.meta.env.VITE_APP_AVATAR)
 
-// 文章详情
+// 留言列表
 const getMessageList = () => {
   MessageList().then(res => {
     console.log(res, 'res');
@@ -45,8 +46,12 @@ const getMessageList = () => {
       // 转换换行
       // item.content = item.content.replace(/\n/g, '<br>')
     })
+  })
+}
 
-    console.log(messageList, 'messageList');
+// 添加留言
+const submitMessage = () => {
+  MessageAdd({ content: message.value }).then(res => {
 
   })
 }
@@ -71,61 +76,56 @@ onMounted(() => {
         <div class="input-box main">
           <div class="userbox">
             <div class="user-img">
-              <!-- <img :src="avatar_url"> -->
-              <!-- <img :src="
-                  user.avatar_url ||
-                    `https://api.dicebear.com/7.x/pixel-art/svg?seed=${user.id}`
-                " /> -->
-              <!-- <h4>{{ user.name || '未登录' }}</h4> -->
+              <img :src="`${avatarUrl}?seed=${user?.id || 'false'}`" alt="avatar" />
+              <h4>{{ user?.name || '未登录' }}</h4>
             </div>
           </div>
 
           <div class="textbox">
-            <!-- <Input v-model="message.content" type="textarea" :autosize="{ minRows: 4, maxRows: 8 }" :maxlength="400"
-              :placeholder="textarea" /> -->
+            <a-textarea v-model:value="message" placeholder="支持markdown语法，尾部2个空格后回车才会换行，最长400个字"
+              :auto-size="{ minRows: 4, maxRows: 8 }" />
+
             <div class="submit-box">
-              <!-- <div class="ykname">
-                <Input v-model="message.name" placeholder="游客可以选填昵称" style="width: 120px" v-if="!user"/>
-              </div> -->
-              <Button type="primary" @click="submitMessage">
+              <a-button type="primary" @click="submitMessage">
                 <Icon type="ios-create" />
                 提交评论
-              </Button>
+              </a-button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="main">
-      <div class="commentList" v-for="(item, index) in messageList" :key="index">
-        <div class="user-ava">
-          <img :src="`${avatarUrl}?seed=${item.user.id || 'null'}`" alt="avatar" />
-        </div>
+    <SpinLoading :isLoading="isLoading">
+      <section class="main">
+        <div class="commentList" v-for="(item, index) in messageList" :key="index">
+          <div class="user-ava">
+            <img :src="`${avatarUrl}?seed=${item.user.id || 'null'}`" alt="avatar" />
+          </div>
 
-        <div class="comment-main">
-          <div class="comment-box animate03">
-            <div class="username">
-              <span>
-                <Icon type="md-person" />
-                {{
+          <div class="comment-main">
+            <div class="comment-box animate03">
+              <div class="username">
+                <span>
+                  <Icon type="md-person" />
+                  {{
                 item.user
                   ? item.user.name
                   : item.name
                     ? `游客（${item.name}）`
                     : '游客'
               }}
-                <em v-if="item.user_id == 1">(博主)</em>
-                <span class="created">
-                  <Icon type="ios-time-outline" />{{ item.created_at }}
+                  <em v-if="item.user_id == 1">(博主)</em>
+                  <span class="created">
+                    <Icon type="ios-time-outline" />{{ item.created_at }}
+                  </span>
                 </span>
-              </span>
-              <span class="floor">{{ item.id }}楼</span>
-            </div>
-            <div class="com_detail" v-html="item.content" v-highlight></div>
+                <span class="floor">{{ item.id }}楼</span>
+              </div>
+              <div class="com_detail" v-html="item.content" v-highlight></div>
 
-            <!-- 自己的留言显示删除按钮 -->
-            <!-- <div class="comment-menu">
+              <!-- 自己的留言显示删除按钮 -->
+              <!-- <div class="comment-menu">
               <Poptip confirm placement="left" title="是否删除该留言?" @on-ok="deleteReply(reply)">
                 <Icon type="md-trash" v-if="reply.user_id == user.id" />
               </Poptip>
@@ -134,25 +134,25 @@ onMounted(() => {
               </Tooltip>
             </div> -->
 
-            <!-- 回复功能 -->
-            <div class="reply-box" v-for="(reply, _index) in item.reply" :key="_index">
-              <p class="reply-header">
-                <span>
-                  {{ reply.user.name }}
-                  <em v-if="reply.user.id == 1">(博主)</em>
-                  <span class="noml">回复</span>
-                  <span>{{
+              <!-- 回复功能 -->
+              <div class="reply-box" v-for="(reply, _index) in item.reply" :key="_index">
+                <p class="reply-header">
+                  <span>
+                    {{ reply.user.name }}
+                    <em v-if="reply.user.id == 1">(博主)</em>
+                    <span class="noml">回复</span>
+                    <span>{{
                 reply.topic_user ? reply.topic_user.name : '游客'
               }}</span>
-                  <em v-if="reply.topic_user && reply.topic_user.id == 1">(博主)</em>
-                  <span class="created">
-                    <Icon type="ios-time-outline" />
-                    {{ item.created_at }}
+                    <em v-if="reply.topic_user && reply.topic_user.id == 1">(博主)</em>
+                    <span class="created">
+                      <Icon type="ios-time-outline" />
+                      {{ item.created_at }}
+                    </span>
                   </span>
-                </span>
-              </p>
-              <div class="com_detail" v-html="reply.content" v-highlight></div>
-              <!-- <div class="comment-menu">
+                </p>
+                <div class="com_detail" v-html="reply.content" v-highlight></div>
+                <!-- <div class="comment-menu">
                 <Poptip confirm placement="left" title="是否删除该留言?" @on-ok="deleteReply(reply)">
                   <Icon type="md-trash" v-if="reply.user_id == user.id" />
                 </Poptip>
@@ -160,11 +160,11 @@ onMounted(() => {
                   <i class="iconfont lv-icon-xiaoxi2" @click="handleReply(item, reply)"></i>
                 </Tooltip>
               </div> -->
-            </div>
+              </div>
 
-          </div>
-          <!-- 回复评论 -->
-          <!-- <div class="reply-text" v-if="item.id == messageId">
+            </div>
+            <!-- 回复评论 -->
+            <!-- <div class="reply-text" v-if="item.id == messageId">
             <Input v-model="replyContent" ref="textarea" type="textarea" :autosize="{ minRows: 3, maxRows: 8 }"
               :maxlength="400" :placeholder="replyTextarea" />
             <div class="reply-button">
@@ -177,10 +177,11 @@ onMounted(() => {
               </Button>
             </div>
           </div> -->
+          </div>
         </div>
-      </div>
 
-    </section>
+      </section>
+    </SpinLoading>
 
   </div>
 </template>

@@ -2,9 +2,16 @@
 import request from "@/http/requestMethod";
 
 // 获取网站信息
-export const MessageList = (params) =>
+export const MessageList = (data) =>
   request({
     method: "POST",
     url: "/api/message/list",
-    params,
+    data,
+  });
+
+export const MessageAdd = (data) =>
+  request({
+    method: "POST",
+    url: "/api/message/add",
+    data,
   });
