@@ -13,6 +13,7 @@ export default defineConfig({
   server: {
     cors: true,
     port: 8888, // 端口号
+    host: "0.0.0.0",
     proxy: {
       '/api': {
         target: 'https://api.golang365.top/api/v2',

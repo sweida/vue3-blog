@@ -39,7 +39,7 @@ const routes = [
       keepAlive: false,
     },
     //路由懒加载
-    component: () => import("@/pages/Blog/articles-detail.vue"),
+    component: () => import("@/pages/Blog/detail.vue"),
   },
   {
     path: "/about",

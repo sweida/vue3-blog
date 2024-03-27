@@ -2,6 +2,9 @@
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import '@/style/index.less'
+// 代码高亮样式
+import '@/style/highlight.less'
+
 </script>
 
 <template>
