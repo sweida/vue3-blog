@@ -57,9 +57,10 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { ArticleDetail, ArticleLike } from '@/api/blog'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 const isLoading = ref(true)
 const href = ref(window.location.href)
 const state = reactive({
@@ -90,6 +91,15 @@ const giveLike = () => {
       detail.value.like += 1
       state.hasClick = true
     }).catch(() => { })
+  }
+}
+
+// 跳转上下一篇文章
+const goArticle = (article) => {
+  if (article) {
+    isLoading.value = true
+    router.push(`/articles/${article.id}`)
+    state.hasclick = false
   }
 }
 

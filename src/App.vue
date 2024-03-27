@@ -7,12 +7,12 @@ import '@/style/index.less'
 <template>
   <Header v-if="!$route.meta.notPortal" />
   <!-- router-view :   路由的整个出口, 用来显示和 URL 对应的组件; -->
-  <!-- keep-alive 是Vue提供的一个抽象组件，主要用于保留组件状态或避免重新渲染。 -->
+  <!-- key是重点 -->
   <router-view v-slot="{ Component }" class="warp slide animate03">
     <keep-alive>
-      <component :is="Component" />
+      <component :is="Component" :key="$route.name" v-if="$route.meta.keepAlive" />
     </keep-alive>
-    <!-- <component v-if="!$route.meta.keepAlive" :is="Component" /> -->
+    <component :is="Component" :key="$route.name" v-if="!$route.meta.keepAlive" />
   </router-view>
 
   <Footer v-if="!$route.meta.notPortal" />

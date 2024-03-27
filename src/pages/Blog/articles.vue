@@ -72,6 +72,7 @@ const getArticles = () => {
   })
 }
 
+
 onMounted(() => {
   getArticles()
 })

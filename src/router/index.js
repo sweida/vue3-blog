@@ -4,39 +4,17 @@ import NotFound from '@/pages/NotFound.vue'
 import blog from './blog'
 import user from './user'
 
-// import Home from "@/pages/Home/index.vue";
-
-// // 下面使用了es6的对象增强写法，命名必须是routes
-// const routes = [
-//   {
-//     //默认展示，这是主页面路由必须加斜杠 /
-//     path: "/",
-//     component: Home,
-//   },
-//   {
-//     path: "/goods",
-//     //路由懒加载
-//     component: () => import("@/pages/Goods/index.vue"),
-//   },
-//   {
-//     path: "/detail",
-//     component: () => import("@/pages/Detail/index.vue"),
-//   },
-//   {
-//     path: "/login",
-//     component: () => import("@/pages/Login/index.vue"),
-//   },
-// ];
-
 // 创建路由
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/:catchAll(.*)', //carch其他所有路由路径重定向到404，必须放到路由表最后
+      name: 'notFound',
       component: NotFound,
       meta: {
         title: '404',
+        // 不需要头部和底部
         // notPortal: true
       },
       // redirect: '/404'
